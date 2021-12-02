@@ -19,7 +19,7 @@ function SongPlayer({ showControls = true, song }) {
     <>
       <Heading title="Music player" />
       <img width="250px" height="250px" src={coverURL} alt="Song" />
-      <audio controls={showControls}>
+      <audio key={audioURL} controls={showControls}>
         <source src={audioURL} />
       </audio>
     </>
@@ -27,12 +27,29 @@ function SongPlayer({ showControls = true, song }) {
 }
 
 export default function App() {
-  const currentSong = {
-    audioURL: "https://examples.devmastery.pl/assets/audio/deadfro5h.mp3",
-    coverURL: "https://examples.devmastery.pl/assets/audio/deadfro5h.jpg",
-    title: "Deadfro5h",
-    artist: "starfrosh",
-  };
+  const songs = [
+    {
+      audioURL: "https://examples.devmastery.pl/assets/audio/deadfro5h.mp3",
+      coverURL: "https://examples.devmastery.pl/assets/audio/deadfro5h.jpg",
+      title: "Deadfro5h",
+      artist: "starfrosh",
+    },
+    {
+      audioURL: "https://examples.devmastery.pl/assets/audio/majesty.mp3",
+      coverURL: "https://examples.devmastery.pl/assets/audio/majesty.jpg",
+      title: "Majesty (Original Mix)",
+      artist: "Ryan Craig Martin",
+    },
+    {
+      audioURL: "https://examples.devmastery.pl/assets/audio/runs.mp3",
+      coverURL: "https://examples.devmastery.pl/assets/audio/runs.jpg",
+      title: "Runs",
+      artist: "Wowa",
+    },
+  ];
+
+  const currentSong = songs[1];
+
   return (
     <div className="App">
       <SongPlayer showControls={true} song={currentSong} />
