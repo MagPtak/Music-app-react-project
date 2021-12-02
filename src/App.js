@@ -6,7 +6,8 @@ function Heading({ title }) {
   return <h1>{title}</h1>;
 }
 
-function SongPlayer({ showControls = true, audioURL, ...remainingProps }) {
+function SongPlayer({ showControls = true, song }) {
+  const { audioURL, coverURL } = song;
   // const showControls = props.showControls;
   // const audioURL = props.audioURL;
   // DESTRUKTURYZACJA =>
@@ -17,7 +18,8 @@ function SongPlayer({ showControls = true, audioURL, ...remainingProps }) {
   return (
     <>
       <Heading title="Music player" />
-      <audio controls={showControls} {...remainingProps}>
+      <img width="250px" height="250px" src={coverURL} alt="Song" />
+      <audio controls={showControls}>
         <source src={audioURL} />
       </audio>
     </>
@@ -25,13 +27,15 @@ function SongPlayer({ showControls = true, audioURL, ...remainingProps }) {
 }
 
 export default function App() {
+  const currentSong = {
+    audioURL: "https://examples.devmastery.pl/assets/audio/deadfro5h.mp3",
+    coverURL: "https://examples.devmastery.pl/assets/audio/deadfro5h.jpg",
+    title: "Deadfro5h",
+    artist: "starfrosh",
+  };
   return (
     <div className="App">
-      <SongPlayer
-        showControls={true}
-        loop
-        audioURL="https://examples.devmastery.pl/assets/audio/deadfro5h.mp3"
-      />
+      <SongPlayer showControls={true} song={currentSong} />
     </div>
   );
 }
