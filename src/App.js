@@ -1,20 +1,20 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./styles.css";
 
 function Heading({ title }) {
   return <h1>{title}</h1>;
 }
 
-function SongPlayer({ showControls = true, song }) {
+function SongPlayer({ showControls = false, song }) {
   const audioRef = useRef();
-  const { audioURL, coverURL } = song;
+  const { audioUrl, coverUrl } = song;
 
   return (
     <>
       <Heading title="Music player" />
-      <img width="250px" height="250px" src={coverURL} alt="Song" />
-      <audio ref={audioRef} key={audioURL} controls={showControls}>
-        <source src={audioURL} />
+      <img width="250px" height="250px" src={coverUrl} alt="Song cover" />
+      <audio ref={audioRef} key={audioUrl} controls={showControls}>
+        <source src={audioUrl} />
       </audio>
       <div>
         <button onClick={() => audioRef.current.play()}>Play</button>
@@ -38,32 +38,21 @@ function SongListItem({ song, isCurrent, onSelect }) {
 }
 
 export default function App() {
-  const songs = [
-    {
-      audioURL: "https://examples.devmastery.pl/assets/audio/deadfro5h.mp3",
-      coverURL: "https://examples.devmastery.pl/assets/audio/deadfro5h.jpg",
-      title: "Deadfro5h",
-      artist: "starfrosh",
-    },
-    {
-      audioURL: "https://examples.devmastery.pl/assets/audio/majesty.mp3",
-      coverURL: "https://examples.devmastery.pl/assets/audio/majesty.jpg",
-      title: "Majesty (Original Mix)",
-      artist: "Ryan Craig Martin",
-    },
-    {
-      audioURL: "https://examples.devmastery.pl/assets/audio/runs.mp3",
-      coverURL: "https://examples.devmastery.pl/assets/audio/runs.jpg",
-      title: "Runs",
-      artist: "Wowa",
-    },
-  ];
+  const URL = "https://examples.devmastery.pl/songs-api/songs";
+  const [songs, setSongs] = useState([]);
+  useEffect(() => {
+    fetch(URL).then((response) => {
+      if (response.ok) {
+        response.json().then(setSongs);
+      }
+    });
+  }, []);
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const currentSong = songs[currentSongIndex];
 
   function handleSelectSong(selectedSong) {
     const audioIndex = songs.findIndex(
-      (song) => song.audioURL === selectedSong.audioURL
+      (song) => song.audioUrl === selectedSong.audioUrl
     );
     if (audioIndex >= 0) {
       setCurrentSongIndex(audioIndex);
@@ -71,20 +60,26 @@ export default function App() {
   }
   return (
     <div className="App">
-      <SongPlayer showControls={true} song={currentSong} />
-      <section>
-        <Heading title="Songs" />
-        <ul>
-          {songs.map((song) => (
-            <SongListItem
-              key={song.audioURL}
-              song={song}
-              isCurrent={currentSong.audioURL === song.audioURL}
-              onSelect={handleSelectSong}
-            />
-          ))}
-        </ul>
-      </section>
+      {songs.length === 0 ? (
+        "Loading..."
+      ) : (
+        <>
+          <SongPlayer showControls={true} song={currentSong} />
+          <section>
+            <Heading title="Songs" />
+            <ul>
+              {songs.map((song) => (
+                <SongListItem
+                  key={song.audioUrl}
+                  song={song}
+                  isCurrent={currentSong.audioUrl === song.audioUrl}
+                  onSelect={handleSelectSong}
+                />
+              ))}
+            </ul>
+          </section>
+        </>
+      )}
     </div>
   );
 }
