@@ -25,6 +25,11 @@ function SongPlayer({ showControls = false, song }) {
   );
 }
 
+//Zastosowanie property children aby uniknac prop drillingu i przekazywania propsów przez kolejne komponenty. Logika komponentu została umieszczona wewnatrz komponentu nadrzednego w którym umieszczone są wszystkie dane - nie ma potrzeby ich przekazywania.
+function Songs({ children }) {
+  return <section className="Songs">{children}</section>;
+}
+
 function SongListItem({ song, isCurrent, onSelect }) {
   function handleClick() {
     onSelect(song);
@@ -70,7 +75,7 @@ export default function App() {
       ) : (
         <>
           <SongPlayer showControls={false} song={currentSong} />
-          <section className="Songs">
+          <Songs>
             <Heading title="Songs" />
             <ul>
               {songs.map((song) => (
@@ -82,7 +87,7 @@ export default function App() {
                 />
               ))}
             </ul>
-          </section>
+          </Songs>
         </>
       )}
     </div>
