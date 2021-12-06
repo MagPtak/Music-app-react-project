@@ -11,7 +11,7 @@ function SongPlayer({ showControls = false, song }) {
   const { audioUrl, coverUrl } = song;
 
   return (
-    <>
+    <section className="SongPlayer">
       <Heading title="Music player" />
       <img width="250px" height="250px" src={coverUrl} alt="Song cover" />
       <audio ref={audioRef} key={audioUrl} controls={showControls}>
@@ -21,18 +21,19 @@ function SongPlayer({ showControls = false, song }) {
         <button onClick={() => audioRef.current.play()}>Play</button>
         <button onClick={() => audioRef.current.pause()}>Pause</button>
       </div>
-    </>
+    </section>
   );
 }
 
 function SongListItem({ song, isCurrent, onSelect }) {
-  const background = isCurrent ? "darkslategrey" : "none";
-  const style = { background };
   function handleClick() {
     onSelect(song);
   }
   return (
-    <li style={style} onClick={handleClick}>
+    <li
+      className={`SongListItem ${isCurrent ? "selected" : ""}`}
+      onClick={handleClick}
+    >
       {song.title} by {song.artist}
     </li>
   );
@@ -68,8 +69,8 @@ export default function App() {
         "Loading..."
       ) : (
         <>
-          <SongPlayer showControls={true} song={currentSong} />
-          <section>
+          <SongPlayer showControls={false} song={currentSong} />
+          <section className="Songs">
             <Heading title="Songs" />
             <ul>
               {songs.map((song) => (
