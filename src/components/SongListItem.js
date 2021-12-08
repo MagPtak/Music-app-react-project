@@ -5,11 +5,13 @@ export function SongListItem({ song, isCurrent, onSelect }) {
     onSelect(song);
   }
   return (
-    <li
-      className={`SongListItem ${isCurrent ? "selected" : ""}`}
-      onClick={handleClick}
-    >
-      {song.title} by {song.artist}
-    </li>
+    <>
+      <li
+        className={`SongListItem ${isCurrent ? "selected" : ""}`}
+        onClick={handleClick}
+      >
+        {song.title} by {song.artist}
+      </li>
+    </>
   );
 }

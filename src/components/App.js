@@ -29,13 +29,33 @@ export function App() {
       setCurrentSongIndex(audioIndex);
     }
   }
+
+  function handleSelectPrevButton() {
+    const previousSong = currentSongIndex - 1;
+    if (currentSongIndex > 0) {
+      setCurrentSongIndex(previousSong);
+    }
+  }
+
+  function handleSelectNextButton() {
+    const nextSong = currentSongIndex + 1;
+    if (currentSongIndex < songs.length - 1) {
+      setCurrentSongIndex(nextSong);
+    }
+  }
+
   return (
     <div className="App">
       {songs.length === 0 ? (
         "Loading..."
       ) : (
         <>
-          <SongPlayer showControls={false} song={currentSong} />
+          <SongPlayer
+            showControls={false}
+            song={currentSong}
+            onClickPrevButton={handleSelectPrevButton}
+            onClickNextButton={handleSelectNextButton}
+          />
           <Songs>
             <Heading title="Songs" />
             <ul>
